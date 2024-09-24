@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Démo Twig</title>
+</head>
+<body>
+    <h1>Démo Twig</h1>
+    {#Commentaire : Crée une variable #}
+    {% set name ="Philippe" %}
+
+    <h2>Bonjour {{ name }}</h2>
+
+    {# Création d'un objet #}
+    {%  set book = {
+        title: 'Symfony',
+        year: 2000,
+        author: 'John Doe'
+    } %}
+
+    <h3>{{ book.author }}</h3>
+    <div>
+        {% for key,val in book %}
+            <div>{{ key }} : {{ val }}</div>
+        {% endfor %}
+    </div>
+<hr>
+    {# Crée une variable #}
+    {% set name2 ="Pénélope" %}
+    <h2>{{ name2 | upper }}</h2>
+    <h2>{{ name2 | length }}</h2>
+
+    {# Crée un tableau #}
+    {% set colors = ["orange","brown","turquoise","blue"] %}
+    <p>Nombre de couleurs : {{ colors | length }}</p>
+    <p>{{ colors|join('/') }}</p>
+    {% for color in colors %}
+        <div style="background-color: {{ color }}">
+            {{ loop.index }} {{ color }}
+        </div>
+    {% endfor %}
+
+<p>{{ "+1 year"|date('Y') }}</p>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
