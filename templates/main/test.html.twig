@@ -1,13 +1,6 @@
-<!doctype html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Démo Twig</title>
-</head>
-<body>
+{% extends "base.html.twig" %}
+{% block title %}{{ parent() }} | Test{% endblock %}
+{%  block body %}
     <h1>Démo Twig</h1>
     {#Commentaire : Crée une variable #}
     {% set name ="Philippe" %}
@@ -43,9 +36,17 @@
         </div>
     {% endfor %}
 
+    {% set h1interprete="<h1>Je suis un titre interprété</h1>" %}
+    {{ h1interprete|raw }}
+    {{ h1interprete }}
+
 <p>{{ "+1 year"|date('Y') }}</p>
-</body>
-</html>
+
+
+    <hr>
+    <p>{{ mySerie.title|raw }} {{ autreVar }}</p>
+
+{% endblock %}
 
 
 
