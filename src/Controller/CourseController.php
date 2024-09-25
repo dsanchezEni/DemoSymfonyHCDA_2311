@@ -16,7 +16,8 @@ class CourseController extends AbstractController
     public function index(CourseRepository $courseRepository): Response
     {
         //$courses = $courseRepository->findAll();
-        $courses = $courseRepository->findBy([], ['name' => 'DESC'],5);
+        //$courses = $courseRepository->findBy([], ['name' => 'DESC'],5);
+        $courses = $courseRepository->findLastCourses();
         return $this->render('course/list.html.twig',[
             'courses' => $courses,
         ]);
