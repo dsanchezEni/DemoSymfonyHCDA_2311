@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Course;
+use App\Repository\CourseRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -12,9 +13,12 @@ use Symfony\Component\Routing\Attribute\Route;
 class CourseController extends AbstractController
 {
     #[Route('', name: 'list', methods: ['GET'])]
-    public function index(): Response
+    public function index(CourseRepository $courseRepository): Response
     {
-        return $this->render('course/list.html.twig');
+        $courses = $courseRepository->findAll();
+        return $this->render('course/list.html.twig',[
+            'courses' => $courses,
+        ]);
     }
 
     #[Route('/demo', name: 'course_demo', methods: ['GET'])]
