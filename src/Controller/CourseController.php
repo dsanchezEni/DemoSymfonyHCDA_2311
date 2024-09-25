@@ -55,8 +55,14 @@ class CourseController extends AbstractController
     }
 
     #[Route('/detail/{id}', name: 'show', requirements:['id'=>'\d+'],methods: ['GET'])]
-    public function show(int $id): Response{
-        return $this->render('course/show.html.twig');
+    public function show(int $id,CourseRepository $courseRepository): Response{
+        $course = $courseRepository->find($id);
+        if(!$course){
+            throw $this->createNotFoundException('Cours introuvable');
+        }
+        return $this->render('course/show.html.twig',[
+            'course' => $course,
+        ]);
     }
 
     #[Route('/ajouter', name: 'create', methods: ['GET','POST'])]
