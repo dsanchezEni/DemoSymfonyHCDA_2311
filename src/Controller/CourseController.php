@@ -55,11 +55,12 @@ class CourseController extends AbstractController
     }
 
     #[Route('/detail/{id}', name: 'show', requirements:['id'=>'\d+'],methods: ['GET'])]
-    public function show(int $id,CourseRepository $courseRepository): Response{
-        $course = $courseRepository->find($id);
+    //public function show(int $id,CourseRepository $courseRepository): Response{
+    public function show(Course $course,CourseRepository $courseRepository): Response{
+       /* $course = $courseRepository->find($id);
         if(!$course){
             throw $this->createNotFoundException('Cours introuvable');
-        }
+        }*/
         return $this->render('course/show.html.twig',[
             'course' => $course,
         ]);
