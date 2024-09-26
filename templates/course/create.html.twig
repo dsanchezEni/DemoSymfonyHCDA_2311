@@ -1,5 +1,5 @@
 {% extends 'base.html.twig' %}
-
+{#{% form_theme courseForm 'bootstrap_5_layout.html.twig' %}#}
 {% block title %}
     Créer un cours | {{ parent() }}
 {% endblock %}
@@ -11,7 +11,7 @@
         {#{{ form(courseForm) }}#}
         {{ form_start(courseForm) }}
         {{ form_widget(courseForm) }}
-        <button>Ajouter</button>
+        <button class="btn btn-primary">Ajouter</button>
         {{ form_end(courseForm) }}
     </div>
 
