@@ -5,7 +5,14 @@ Modifier un cours | {{parent()  }}
 {% endblock %}
 
 {% block body %}
-<h1>Modifier un cours</h1>
-    <div></div>
+<h1>Modifier le cours</h1>
+    <div>
+        {# Afficher le formulaire pour remplir un cours #}
+        {#{{ form(courseForm) }}#}
+        {{ form_start(courseForm) }}
+        {{ form_widget(courseForm) }}
+        <button class="btn btn-primary btn-sm">Modifier</button>
+        {{ form_end(courseForm) }}
+    </div>
 {% endblock %}
 

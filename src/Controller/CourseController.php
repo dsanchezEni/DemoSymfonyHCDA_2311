@@ -89,7 +89,18 @@ class CourseController extends AbstractController
     }
 
     #[Route('/modifier/{id}', name: 'edit',requirements:['id'=>'\d+'], methods: ['GET','POST'])]
-    public function edit(): Response{
-        return $this->render('course/edit.html.twig');
+    public function edit(Course $course, Request $request, EntityManagerInterface $em): Response{
+        $courseForm = $this->createForm(CourseType::class,$course);
+        $courseForm->handleRequest($request);
+        if($courseForm->isSubmitted() && $courseForm->isValid()){
+            //Le persist n'est pas nécessaire car Doctrine connait déjà l'objet
+            $course->setDateModified(new \DateTimeImmutable());
+            $em->flush();
+            $this->addFlash('success','Le cours a été modifié !');
+            return $this->redirectToRoute("cours_show",['id'=>$course->getId()]);
+        }
+        return $this->render('course/edit.html.twig',[
+            'courseForm'=>$courseForm,
+        ]);
     }
 }
