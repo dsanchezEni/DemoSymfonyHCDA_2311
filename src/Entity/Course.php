@@ -39,6 +39,7 @@ class Course
     public function __construct()
     {
         $this->published = false;
+        $this->dateCreated = new \DateTimeImmutable();
     }
 
 

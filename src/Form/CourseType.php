@@ -21,12 +21,12 @@ class CourseType extends AbstractType
             ->add('content', TextareaType::class,['label'=>'Description','attr'=>['class'=>'form-control'],'required'=>false])
             ->add('duration',IntegerType::class,['label'=>'Durée (jours)','attr'=>['class'=>'form-control']])
             ->add('published',CheckboxType::class,['label'=>'Publié','required'=>false])
-            ->add('dateCreated', null, [
+          /*  ->add('dateCreated', null, [
                 'widget' => 'single_text',
             ])
             ->add('dateModified', null, [
                 'widget' => 'single_text',
-            ])
+            ])*/
            /* ->add('btnCreate',SubmitType::class,['label'=>'Ajouter','attr'=>['class'=>'btn btn-success']])*/
         ;
     }
