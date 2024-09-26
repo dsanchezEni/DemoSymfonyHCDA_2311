@@ -8,6 +8,11 @@
     <h1>Créer un cours</h1>
     <div>
         {# Afficher le formulaire pour remplir un cours #}
+        {#{{ form(courseForm) }}#}
+        {{ form_start(courseForm) }}
+        {{ form_widget(courseForm) }}
+        <button>Ajouter</button>
+        {{ form_end(courseForm) }}
     </div>
 
 {% endblock %}
