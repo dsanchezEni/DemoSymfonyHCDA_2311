@@ -26,6 +26,7 @@
                     <td>
                         <a href="{{ path('cours_show',{'id':course.id}) }}" title="Détail du cours">Détail</a>
                         <a href="{{ path('cours_edit',{'id':course.id}) }}" title="Modifier un cours">Modifier</a>
+                        <a href="{{ path('cours_delete',{'id':course.id,'token':csrf_token('delete-'~course.id)}) }}" title="Supprimer le cours">Supprimer</a>
                     </td>
                 </tr>
             {% else %}

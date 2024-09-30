@@ -2,7 +2,11 @@
 
 namespace App\Form;
 
+use App\Entity\Category;
 use App\Entity\Course;
+use App\Entity\Trainer;
+use Doctrine\ORM\EntityRepository;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
@@ -21,6 +25,24 @@ class CourseType extends AbstractType
             ->add('content', TextareaType::class,['label'=>'Description','attr'=>['class'=>'form-control'],'required'=>false])
             ->add('duration',IntegerType::class,['label'=>'Durée (jours)','attr'=>['class'=>'form-control']])
             ->add('published',CheckboxType::class,['label'=>'Publié','required'=>false])
+            ->add('category',EntityType::class, [
+                'label'=>'Catégorie',
+                'class'=>Category::class,
+                'choice_label'=>'name',
+                'placeholder'=>'___Choisir une catégorie___'
+            ])
+            ->add('trainers',EntityType::class, [
+                'label'=>'Formateurs',
+                'class'=>Trainer::class,
+                'required'=>false,
+                'query_builder'=>function(EntityRepository $er){
+                    return $er->createQueryBuilder('f')->orderBy('f.lastname', 'ASC')
+                        ->addOrderBy('f.firstname', 'ASC');
+                },
+                'choice_label'=>'fullname',
+                'placeholder'=>'___Choisir un formateur___',
+                'multiple'=>true
+            ])
           /*  ->add('dateCreated', null, [
                 'widget' => 'single_text',
             ])
