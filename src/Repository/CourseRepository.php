@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Course;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -16,7 +17,7 @@ class CourseRepository extends ServiceEntityRepository
         parent::__construct($registry, Course::class);
     }
 
-    public function findLastCourses(int $duration = 2): array{
+    public function findLastCourses(int $duration = 2): Paginator{
         //En DQL
         /*$entityManager = $this->getEntityManager();
         $dql = "SELECT c 
@@ -31,12 +32,17 @@ class CourseRepository extends ServiceEntityRepository
 
         //Avec le queryBuilder
         $queryBuilder = $this->createQueryBuilder('c')
+            ->addSelect('ca')
+            ->addSelect('f')
+            ->leftJoin('c.category','ca')
+            ->leftJoin('c.trainers','f')
             ->andWhere('c.duration > :duration')
             ->addOrderBy('c.dateCreated', 'DESC')
             ->setParameter('duration', $duration)
             ->setMaxResults(5);
         $query = $queryBuilder->getQuery();
-        return $query->getResult();
+       // return $query->getResult();
+        return new Paginator($query);
     }
 
     //    /**

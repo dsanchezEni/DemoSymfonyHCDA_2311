@@ -10,5 +10,13 @@
   <p>Durée (jours) : {{ course.duration }}</p>
   <p>Date création : {{ course.dateCreated | date('d/m/Y') }}</p>
   <p>Publié : {{ course.published ? "Oui":"Non" }}</p>
+  <p>Catégorie:  {{ course.category ? course.category.name : '?' }}</p>
+  <p>Nombre de formateurs: {{ course.trainers|length }}</p>
+  <p>Liste des formateurs: </p>
+  <ul>
+    {% for trainer in course.trainers %}
+      <li>{{ trainer.firstname~' '~trainer.lastname }}</li>
+    {% endfor %}
+  </ul>
 {% endblock %}
 
