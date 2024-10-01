@@ -22,7 +22,15 @@
                     <td>{{ course.dateCreated | date('d/m/Y') }}</td>
                     <td>{{ course.published ? "X":"" }}</td>
                     <td>{{ course.category ? course.category.name : '?' }}</td>
-                    <td>{{ course.trainers|length }}</td>
+                    {% if is_granted('ROLE_PLANNER') and (course.trainers.count > 0) %}
+                        <td>
+                            <a href="{{ path('cours_trainers',{'id':course.id}) }}">
+                                {{ course.trainers|length }}
+                            </a>
+                        </td>
+                    {% else %}
+                        <td>{{ course.trainers|length }}</td>
+                    {% endif %}
                     <td>
                         <a href="{{ path('cours_show',{'id':course.id}) }}" title="Détail du cours">Détail</a>
                         <a href="{{ path('cours_edit',{'id':course.id}) }}" title="Modifier un cours">Modifier</a>

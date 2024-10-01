@@ -38,6 +38,9 @@ security:
         # - { path: ^/profile, roles: ROLE_USER }
         - { path: ^/cours/ajouter, roles: ROLE_USER }
         - { path: ^/admin, roles: ROLE_ADMIN }
+    role_hierarchy:
+        ROLE_PLANNER: ROLE_USER
+        ROLE_ADMIN: ROLE_PLANNER
 
 when@test:
     security:
