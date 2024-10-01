@@ -18,24 +18,34 @@
                 <li class="item">
                     <a class="nav-link" href="{{ path('cours_list')}}" title="Liste des cours">Liste des cours</a>
                 </li>
+                {% if app.user %}
                 <li class="item">
                     <a class="nav-link" href="{{ path('cours_create')}}" title="Créer un cours">Créer un cours</a>
                 </li>
+                {% endif %}
                 <li class="item">
                     <a class="nav-link" href="{{ path('app_category_index')}}" title="Lister les catégories">Liste des catégories</a>
                 </li>
                 <li class="item">
                     <a class="nav-link" href="{{ path('app_category_new')}}" title="Créer une catégorie">Créer une catégorie</a>
                 </li>
-                <li class="item">
-                    <a class="nav-link" href="{{ path('app_register')}}" title="S'inscrire">S'inscrire</a>
-                </li>
-                <li class="item">
-                    <a class="nav-link" href="{{ path('app_login')}}" title="Se connecter">Se connecter</a>
-                </li>
+                {% if app.user %}
                 <li class="item">
                     <a class="nav-link" href="{{ path('app_logout')}}" title="Se déconnecter">Se déconnecter</a>
                 </li>
+                {% else %}
+                    <li class="item">
+                        <a class="nav-link" href="{{ path('app_register')}}" title="S'inscrire">S'inscrire</a>
+                    </li>
+                    <li class="item">
+                        <a class="nav-link" href="{{ path('app_login')}}" title="Se connecter">Se connecter</a>
+                    </li>
+                {% endif %}
+                {% if is_granted("ROLE_ADMIN") %}
+                <li class="item">
+                    <a class="nav-link" href="{{ path('admin_dashboard')}}" title="Dashboard Admin">Dashboard</a>
+                </li>
+                {% endif %}
             </ul>
         </div>
     </div>
