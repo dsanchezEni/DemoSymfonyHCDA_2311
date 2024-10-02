@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ORM\Entity(repositoryClass: CategoryRepository::class)]
 #[UniqueEntity(fields: ['name'], message: 'Category already exists!')]
@@ -15,9 +16,11 @@ class Category
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups('getCategoriesFull')]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups('getCategoriesFull')]
     private ?string $name = null;
 
     #[ORM\Column]
@@ -30,6 +33,7 @@ class Category
      * @var Collection<int, Course>
      */
     #[ORM\OneToMany(targetEntity: Course::class, mappedBy: 'category',cascade: ['remove'])]
+    #[Groups('getCategoriesFull')]
     private Collection $courses;
 
     public function __construct()
