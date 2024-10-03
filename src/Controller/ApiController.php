@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Category;
+use App\Form\CategoryType;
 use App\Models\Region;
 use App\Repository\CategoryRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -14,6 +15,8 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Component\Validator\ConstraintViolationListInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class ApiController extends AbstractController
 {
@@ -49,11 +52,20 @@ class ApiController extends AbstractController
     }
 
     #[Route('/api/categories', name: 'api_category_create',methods: ['POST'])]
-    public function create(Request $request, SerializerInterface $serializer,EntityManagerInterface $em):JsonResponse{
+    public function create(Request $request, SerializerInterface $serializer,
+                           EntityManagerInterface $em, ValidatorInterface $validator):JsonResponse{
        //On crée une category
         //On récupère les données dans la requête.
         $data = $request->getContent();
         $category = $serializer->deserialize($data, Category::class,'json');
+        //Tester avant d'enregistrer dans la BD
+        $errors = $validator->validate($category);
+        if(count($errors) > 0){
+            $errorsJson = $serializer->serialize($this->getErrors($errors),'json');
+            return new JsonResponse($errorsJson,Response::HTTP_BAD_REQUEST,[],true);
+        }
+
+        //Enregistre dans la BD
         $em->persist($category);
         $em->flush();
         //On retourne une réponse avec le code statut 201 et la nouvelle catégorie au format JSON.
@@ -68,19 +80,30 @@ class ApiController extends AbstractController
 
     #[Route('/api/categories/{id}', name: 'api_category_update',requirements:['id'=>'\d+'],methods: ['PUT'])]
     public function update(?Category $category,Request $request,
-                           SerializerInterface $serializer,EntityManagerInterface $em):JsonResponse{
+                           SerializerInterface $serializer,
+                           EntityManagerInterface $em,
+                           ValidatorInterface $validator):JsonResponse{
         //On test si on a la category
         if(!$category){
             return new JsonResponse(null,Response::HTTP_NOT_FOUND);
         }
         //On récupère les données dans la requête.
         $data = $request->getContent();
-        //On injecte les données reçues dans l'objet $category récupéré
+        $dataJson =json_decode($data,true);
+        $form = $this->createForm(CategoryType::class,$category,['csrf_protection'=>false]);
+        $form->submit($dataJson,true);
+        if($form->isValid()){
+            $em->flush();
+            return new JsonResponse(null,Response::HTTP_NO_CONTENT);
+        }else{
+            return new JsonResponse(null,Response::HTTP_BAD_REQUEST);
+        }
+       /* //On injecte les données reçues dans l'objet $category récupéré
         $serializer->deserialize($data,
             Category::class,
             'json',
             [AbstractNormalizer::OBJECT_TO_POPULATE=>$category]);
-        $em->flush();
+        $em->flush();*/
         //On retourne une réponse avec le code statut 204 sans données.
         return new JsonResponse(null,Response::HTTP_NO_CONTENT);
     }
@@ -96,6 +119,15 @@ class ApiController extends AbstractController
         //On retourne une réponse avec le code statut 204 sans données.
         return new JsonResponse(null,Response::HTTP_NO_CONTENT);
     }
+
+    private function getErrors(ConstraintViolationListInterface $constraintViolationList):array{
+        $errors = [];
+        foreach ($constraintViolationList as $violation){
+            $errors[$violation->getPropertyPath()] = $violation->getMessage();
+        }
+        return $errors;
+    }
+
 }
 
 

@@ -13,12 +13,12 @@ class CategoryType extends AbstractType
     {
         $builder
             ->add('name')
-            ->add('dateCreated', null, [
+           /* ->add('dateCreated', null, [
                 'widget' => 'single_text',
             ])
             ->add('dateModified', null, [
                 'widget' => 'single_text',
-            ])
+            ])*/
         ;
     }
 
